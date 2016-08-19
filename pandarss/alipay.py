@@ -27,7 +27,7 @@ class Settings(dict):
 
 class AliPay:
 
-    GATEWAY = 'https://mapi.alipay.com/gateway.do?'
+    GATEWAY = 'http://api.web567.net/plugin.php?'
 
     def __init__(self, settings={},logger=None):
         self.settings = settings
@@ -138,8 +138,23 @@ class AliPay:
         veryfy_result = urllib2.urlopen(urllib2.Request(gateway,urlencode(params))).read()
         self.logger.info('veryfy_result:%s'%veryfy_result)
         return veryfy_result.lower().strip() == 'true'
-
-
+    def make_web567_request_url(self,**params):
+        _params['id'] = 'add:alipay'
+        return AliPay.GATEWAY + urlencode(_params)
+        
+    def create_direct_web567_pay_by_user(self, addnum, total, showurl, uid, apiid, apikey):
+        params = {}
+        params['showurl']         = self.settings.WEB567_SHOWURL
+        params['apiid']           = self.settings.WEB567_APIID
+        params['apikey']          = self.settings.WEB567_APIKEY
+        
+        
+        params['addnum']          = addnum
+        params['total']           = total
+        params['uid']             = uid
+        
+        return self.make_request_url(**params)
+        
 if __name__ == '__main__':
     settings = Settings(
         ALIPAY_KEY = '234234',
