@@ -289,7 +289,7 @@ def alipay_return():
     return render('alipay_return',params=request.params,account=account)
     
     
-@app.route('/web567/return')
+@app.post('/web567/return')
 def web567_return():
     order_id_a = request.params.post('addnum')
     order_id = order_id_a[-18:]
@@ -304,7 +304,8 @@ def web567_return():
                 if apiresp2['code'] > 0:
                     logger.info(apiresp2['msg'])
                     return abort(400,apiresp2['msg'])
-                return 'success'
+                else:
+                    return render('web567_pay_ok',msg=apiresp2['msg'])
             else:
                 logger.info(u"订单已经支付")
                 return abort(400,u"订单已经支付")
