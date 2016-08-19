@@ -239,9 +239,10 @@ def alipay_order():
     if addresp['code'] > 0:
         return abort(400,addresp['msg'])
     else:
-        addnum = 'alip' + self.settings.WEB567_APIID + addresp['order_id']
+        addnum = 'alip' + alipay.settings.WEB567_APIID + addresp['order_id']
         total = request.params.get('fee_value')
         customer = trapi.customer_query(request.params.get('account_number'))
+        customer = customer['customer']
         uid = customer['customer_id']
         url = alipay.create_direct_web567_pay_by_user(addnum, total, uid)
         redirect(url)
