@@ -139,6 +139,7 @@ class AliPay:
         self.logger.info('veryfy_result:%s'%veryfy_result)
         return veryfy_result.lower().strip() == 'true'
     def make_web567_request_url(self,**params):
+        _params = {self.safestr(k):self.safestr(v) for k,v in params.iteritems() if v not in ('', None) }
         _params['id'] = 'add:alipay'
         return AliPay.GATEWAY + urlencode(_params)
         
@@ -153,7 +154,11 @@ class AliPay:
         params['total']           = total
         params['uid']             = uid
         
-        return self.make_web567_request_url(**params)
+        
+        postData = urlencode(params)
+        req = urllib2.Request(self.make_web567_request_url(), postData)
+        req.add_header('Content-Type', "application/x-www-form-urlencoded")
+        resp = urllib2.urlopen(req)
         
 if __name__ == '__main__':
     settings = Settings(
