@@ -287,6 +287,30 @@ def alipay_return():
         if order:
             account = order.get("account_number")
     return render('alipay_return',params=request.params,account=account)
+    
+    
+@app.route('/web567/return')
+def web567_return():
+    order_id_a = request.params.post('addnum')
+    order_id = order_id_a[-18:]
+    apikey = request.params.post('apikey')
+    if apikey == md5(alipay.settings.WEB567_APIKEY).hexdigest():
+        apiresp1 = trapi.order_query(order_id=order_id)
+        if apiresp1['code'] > 0:
+            logger.info(apiresp1['msg'])
+        else:
+            if apiresp1['order']['pay_status'] == 0:
+                apiresp2 = trapi.customer_payok(order_id=order_id)
+                if apiresp2['code'] > 0:
+                    logger.info(apiresp2['msg'])
+                    return abort(400,apiresp2['msg'])
+                return 'success'
+            else:
+                logger.info(u"订单已经支付")
+                return abort(400,u"订单已经支付")
+    else:
+        logger.info(u"验证apikey失败")
+        return abort(400,u"验证apikey失败")
 
 
 @app.route('/product')
