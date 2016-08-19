@@ -55,7 +55,11 @@ alipay = AliPay(Settings(
     ALIPAY_NOTIFY_URL=app.config['alipay.alipay_notify_url'],
     ALIPAY_SHOW_URL='',
     # 访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-    ALIPAY_TRANSPORT='https'
+    ALIPAY_TRANSPORT='https',
+    
+    WEB567_APIID=app.config['alipay.web567_apiid'],
+    WEB567_APIKEY=app.config['alipay.web567_apikey'],
+    WEB567_SHOWURL=app.config['alipay.web567_showurl']
 ),logger=logger)
 
 ################################################################################
@@ -235,9 +239,11 @@ def alipay_order():
     if addresp['code'] > 0:
         return abort(400,addresp['msg'])
     else:
-        order_id = addresp['order_id']
+        addnum = 'alip' + self.settings.WEB567_APIID + addresp['order_id']
+        total = request.params.get('fee_value')
+        uid = request.params.get('account_number')
         product = trapi.product_get(request.params.get('product_id'))
-        url = alipay.create_direct_pay_by_user(order_id, product['product_name'], product['product_name'], request.params.get('fee_value'))
+        url = alipay.create_direct_web567_pay_by_user(addnum, total, total)
         redirect(url)
 
 
