@@ -146,7 +146,7 @@ class AliPay:
         params = {}
         params['showurl']         = self.settings.WEB567_SHOWURL
         params['apiid']           = self.settings.WEB567_APIID
-        params['apikey']          = self.settings.WEB567_APIKEY
+        params['apikey']          = md5(self.settings.WEB567_APIKEY).hexdigest()
         
         
         params['addnum']          = addnum
