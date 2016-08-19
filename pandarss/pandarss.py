@@ -241,9 +241,9 @@ def alipay_order():
     else:
         addnum = 'alip' + self.settings.WEB567_APIID + addresp['order_id']
         total = request.params.get('fee_value')
-        uid = request.params.get('account_number')
-        product = trapi.product_get(request.params.get('product_id'))
-        url = alipay.create_direct_web567_pay_by_user(addnum, total, total)
+        customer = trapi.customer_query(request.params.get('account_number'))
+        uid = customer['customer_id']
+        url = alipay.create_direct_web567_pay_by_user(addnum, total, uid)
         redirect(url)
 
 
