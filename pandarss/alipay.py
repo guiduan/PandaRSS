@@ -142,7 +142,7 @@ class AliPay:
         _params['id'] = 'add:alipay'
         return AliPay.GATEWAY + urlencode(_params)
         
-    def create_direct_web567_pay_by_user(self, addnum, total, showurl, uid, apiid, apikey):
+    def create_direct_web567_pay_by_user(self, addnum, total, uid):
         params = {}
         params['showurl']         = self.settings.WEB567_SHOWURL
         params['apiid']           = self.settings.WEB567_APIID
