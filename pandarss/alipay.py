@@ -153,7 +153,7 @@ class AliPay:
         params['total']           = total
         params['uid']             = uid
         
-        return self.make_request_url(**params)
+        return self.make_web567_request_url(**params)
         
 if __name__ == '__main__':
     settings = Settings(
