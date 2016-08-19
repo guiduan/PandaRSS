@@ -239,13 +239,22 @@ def alipay_order():
     if addresp['code'] > 0:
         return abort(400,addresp['msg'])
     else:
+        #订单号
         addnum = 'alip' + alipay.settings.WEB567_APIID + addresp['order_id']
+        #金额
         total = request.params.get('fee_value')
+        #用户uid
         customer = trapi.customer_query(request.params.get('account_number'))
         customer = customer['customer']
         uid = customer['customer_id']
-        url = alipay.create_direct_web567_pay_by_user(addnum, total, uid)
-        redirect(url)
+        #回调地址
+        showurl = alipay.settings.WEB567_showurl
+        #web567 apiid
+        apiid = alipay.settings.WEB567_APIID
+        #加密后的web567 apikey
+        apikey = md5(alipay.settings.WEB567_APIKEY).hexdigest()
+        
+        return render('web567_pay_form',addnum=addnum,total=total,uid=uid,showurl=showurl,apiid=apiid,apikey=apikey)
 
 
 ################################################################################
