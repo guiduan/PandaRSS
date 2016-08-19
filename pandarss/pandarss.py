@@ -248,7 +248,7 @@ def alipay_order():
         customer = customer['customer']
         uid = customer['customer_id']
         #回调地址
-        showurl = alipay.settings.WEB567_showurl
+        showurl = alipay.settings.WEB567_SHOWURL
         #web567 apiid
         apiid = alipay.settings.WEB567_APIID
         #加密后的web567 apikey
